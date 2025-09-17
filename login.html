@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="msapplication-navbutton-color" content="#1a73e8">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#1a73e8">
+    <title>Login - IoT Poultry Farm Monitoring System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <div class="login-header">
+                <div class="logo">
+                    <i class="fas fa-feather-alt logo-icon" aria-hidden="true"></i>
+                    <h1>PoultryPal</h1>
+                </div>
+                <p>Sign in to access your farm monitoring dashboard</p>
+            </div>
+
+            <form class="login-form" id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <div class="input-group">
+                        <input type="email" id="email" name="email" required autocomplete="username" placeholder="Enter your email">
+                        <i class="fas fa-envelope input-icon" aria-hidden="true"></i>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="input-group">
+                        <input type="password" id="password" name="password" required autocomplete="current-password" placeholder="Enter your password">
+                        <i class="fas fa-lock input-icon" aria-hidden="true"></i>
+                        <button type="button" class="password-toggle" id="togglePassword" aria-label="Show password">
+                            <i class="far fa-eye" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <div class="error-message" id="errorMessage"></div>
+                </div>
+                
+                <div class="remember-forgot">
+                    <div class="remember-me">
+                        <input type="checkbox" id="rememberMe" name="rememberMe">
+                        <label for="rememberMe">Remember me</label>
+                    </div>
+                    <a href="#" class="forgot-password">Forgot password?</a>
+                </div>
+                
+                <button type="submit" class="btn-login">
+                    <span class="btn-text">Sign In</span>
+                    <div class="btn-loader" style="display: none;">
+                        <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
+                    </div>
+                </button>
+                
+                <div class="demo-credentials">
+                    <p>Demo credentials: demo@poultryfarm.com / demo123</p>
+                </div>
+            </form>
+
+            <div class="login-footer">
+                <p>Don't have an account? <a href="#" class="signup-link">Contact administrator</a></p>
+                <p class="copyright">© 2025 IoT PoultryFarm Monitor. All rights reserved.</p>
+                <p class="project-info">MSU-CICS Capstone Project</p>
+            </div>
+        </div>
+
+        <div class="login-features">
+            <h2>IoT-Based Poultry Farm Monitoring System</h2>
+            <p>Real-time environmental monitoring for optimal poultry health and productivity</p>
+            
+            <div class="feature-list">
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-thermometer-half" aria-hidden="true"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Temperature Monitoring</h3>
+                        <p>Continuous tracking of poultry house temperature with real-time alerts</p>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-tint" aria-hidden="true"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Humidity Control</h3>
+                        <p>Maintain optimal humidity levels for poultry health and growth</p>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-wind" aria-hidden="true"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Ammonia Detection</h3>
+                        <p>Monitor NH₃ levels to prevent respiratory issues and improve welfare</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line" aria-hidden="true"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Predictive Analytics</h3>
+                        <p>AI-powered insights for proactive farm management</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="msapplication-TileColor" content="#1a73e8">
+    <meta name="msapplication-navbutton-color" content="#1a73e8">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="description" content="IoT Poultry Farm Monitoring Dashboard - Real-time environmental monitoring for optimal poultry health">
+    <title>Dashboard - IoT Poultry Farm Monitoring</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo">
+            <i class="fas fa-feather-alt logo-icon" aria-hidden="true"></i>
+            <div class="logo-text"><span>PoultryPal</span></div>
+        </div>
+        
+        <nav aria-label="Main navigation">
+            <ul class="nav-links">
+                <li><a href="#" class="active" aria-current="page"><i class="fas fa-th-large" aria-hidden="true"></i> <span>Dashboard</span></a></li>
+                <li><a href="#reports"><i class="fas fa-chart-bar" aria-hidden="true"></i> <span>Reports</span></a></li>
+                <li><a href="#houses"><i class="fas fa-home" aria-hidden="true"></i> <span>Poultry Houses</span></a></li>
+                <li><a href="#equipment"><i class="fas fa-cogs" aria-hidden="true"></i> <span>Equipment</span></a></li>
+                <li><a href="#settings"><i class="fas fa-cog" aria-hidden="true"></i> <span>Settings</span></a></li>
+            </ul>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <div class="system-status">
+                <span class="status-indicator online" id="systemStatus"></span>
+                <span>System Online</span>
+            </div>
+            <p>© 2025 IoT PoultryPal</p>
+            <p>MSU-CICS Capstone Project</p>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="header-controls">
+                <div class="house-selector">
+                    <label for="houseSelector">Poultry House:</label>
+                    <select id="houseSelector" aria-label="Select poultry house">
+                        <option value="house-1">Broiler House 1</option>
+                        <option value="house-2">Layer House 1</option>
+                        <option value="house-3">Breeder House 1</option>
+                    </select>
+                </div>
+                
+                <div class="search-box">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                    <input type="text" placeholder="Search..." aria-label="Search dashboard">
+                </div>
+            </div>
+            
+            <div class="user-menu">
+                <div class="notifications" aria-label="Notifications" id="notificationsBtn">
+                    <i class="fas fa-bell" aria-hidden="true"></i>
+                    <span class="notification-badge">3</span>
+                </div>
+                
+                <div class="user-profile">
+                    <div class="user-avatar" aria-hidden="true">AD</div>
+                    <div class="user-info">
+                        <div class="user-name">Admin User</div>
+                        <div class="user-role">Farm Manager</div>
+                    </div>
+                    <button id="logoutBtn" class="logout-btn" aria-label="Logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <main class="dashboard">
+            <div class="page-title">
+                <h1>Poultry Farm Monitoring Dashboard</h1>
+                <div class="header-actions">
+                    <div class="date-filter">
+                        <i class="fas fa-calendar-alt calendar-icon-margin" aria-hidden="true"></i>
+                        <select id="dateFilter" aria-label="Date Filter">
+                            <option value="today">Today</option>
+                            <option value="last7">Last 7 days</option>
+                            <option value="last30">Last 30 days</option>
+                        </select>
+                    </div>
+                    <button id="exportData" class="btn-secondary">
+                        <i class="fas fa-download" aria-hidden="true"></i> Export Data
+                    </button>
+                </div>
+            </div>
+
+            <!-- Status Cards -->
+            <div class="status-cards">
+                <div class="card temp">
+                    <div class="card-header">
+                        <h3>Temperature</h3>
+                        <i class="fas fa-thermometer-half" aria-hidden="true"></i>
+                    </div>
+                    <div class="card-value" id="tempValue">27.5°C</div>
+                    <div class="card-trend trend-up">
+                        <i class="fas fa-arrow-up" aria-hidden="true"></i> 0.3°C from last reading
+                    </div>
+                    <div class="card-footer">
+                        <span class="optimal-range">Optimal: 24-28°C</span>
+                    </div>
+                </div>
+                
+                <div class="card humidity">
+                    <div class="card-header">
+                        <h3>Humidity</h3>
+                        <i class="fas fa-tint" aria-hidden="true"></i>
+                    </div>
+                    <div class="card-value" id="humidityValue">65%</div>
+                    <div class="card-trend trend-down">
+                        <i class="fas fa-arrow-down" aria-hidden="true"></i> 2% from last reading
+                    </div>
+                    <div class="card-footer">
+                        <span class="optimal-range">Optimal: 60-70%</span>
+                    </div>
+                </div>
+                
+                <div class="card ammonia">
+                    <div class="card-header">
+                        <h3>Ammonia</h3>
+                        <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+                    </div>
+                    <div class="card-value">12 ppm</div>
+                    <div class="card-trend trend-up">
+                        <i class="fas fa-arrow-up" aria-hidden="true"></i> 1 ppm from last reading
+                    </div>
+                    <div class="card-footer">
+                        <span class="optimal-range">Safe: < 15 ppm</span>
+                    </div>
+                </div>
+                
+                <div class="card birds">
+                    <div class="card-header">
+                        <h3>Birds Count</h3>
+                        <i class="fas fa-dove" aria-hidden="true"></i>
+                    </div>
+                    <div class="card-value">2,450</div>
+                    <div class="card-trend trend-up">
+                        <i class="fas fa-arrow-up" aria-hidden="true"></i> 50 from yesterday
+                    </div>
+                    <div class="card-footer">
+                        <span class="optimal-range">Capacity: 3,000</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="charts-grid">
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3>Temperature & Humidity</h3>
+                        <div class="chart-actions">
+                            <button class="active" data-period="day">Day</button>
+                            <button data-period="week">Week</button>
+                            <button data-period="month">Month</button>
+                        </div>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="tempHumidityChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3>Ammonia Levels</h3>
+                        <div class="chart-actions">
+                            <button class="active" data-period="day">Day</button>
+                            <button data-period="week">Week</button>
+                        </div>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="ammoniaChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3>Predictive Analytics</h3>
+                        <div class="chart-actions">
+                            <button class="active" data-period="day">6h</button>
+                            <button data-period="week">12h</button>
+                            <button data-period="month">24h</button>
+                        </div>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="predictiveChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Dashboard Sections -->
+            <div class="dashboard-grid">
+                <!-- Equipment Status - Updated Code -->
+                <div class="card equipment-status" id="equipmentStatus">
+                  <div class="card-header">
+                    <h3>Equipment Control</h3>
+                    <i class="fas fa-cogs" aria-hidden="true"></i>
+                  </div>
+                  
+                  <!-- Fan System -->
+                  <div class="equipment-item">
+                    <div class="equipment-info">
+                      <h4>Fan System</h4>
+                      <div class="equipment-state">
+                        <span class="state-label">Status:</span>
+                        <span class="state-value online" id="fanStatus">RUNNING</span>
+                      </div>
+                      <div class="equipment-mode">
+                        <span class="mode-label">Mode:</span>
+                        <span class="mode-value" id="fanMode">Automatic</span>
+                      </div>
+                    </div>
+                    <div class="equipment-controls">
+                      <div class="mode-toggle">
+                        <button class="control-btn active" id="fanAutoBtn">Auto</button>
+                        <button class="control-btn" id="fanManualBtn">Manual</button>
+                      </div>
+                      <div class="power-control manual-only" id="fanPowerControl" style="display: none;">
+                        <button class="power-btn" id="fanOnBtn">Turn On</button>
+                        <button class="power-btn active" id="fanOffBtn">Turn Off</button>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Ventilation System -->
+                  <div class="equipment-item">
+                    <div class="equipment-info">
+                      <h4>Ventilation System</h4>
+                      <div class="equipment-state">
+                        <span class="state-label">Status:</span>
+                        <span class="state-value online" id="ventilationStatus">RUNNING</span>
+                      </div>
+                      <div class="equipment-mode">
+                        <span class="mode-label">Mode:</span>
+                        <span class="mode-value" id="ventilationMode">Automatic</span>
+                      </div>
+                    </div>
+                    <div class="equipment-controls">
+                      <div class="mode-toggle">
+                        <button class="control-btn active" id="ventilationAutoBtn">Auto</button>
+                        <button class="control-btn" id="ventilationManualBtn">Manual</button>
+                      </div>
+                      <div class="power-control manual-only" id="ventilationPowerControl" style="display: none;">
+                        <button class="power-btn" id="ventilationOnBtn">Turn On</button>
+                        <button class="power-btn active" id="ventilationOffBtn">Turn Off</button>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="equipment-footer">
+                    <span class="last-updated">Last updated: 2 minutes ago</span>
+                  </div>
+                </div>
+            </div>
+
+            <!-- Alerts Section -->
+            <div class="alerts-section">
+                <div class="section-header">
+                    <h3>Recent Alerts</h3>
+                    <a href="#" class="view-all">View All <i class="fas fa-chevron-right" aria-hidden="true"></i></a>
+                </div>
+                
+                <div class="alerts-container">
+                    <div class="alert-card alert-high" data-alert-id="1">
+                        <div class="alert-icon">
+                            <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+                        </div>
+                        <div class="alert-content">
+                            <h4>High Temperature Alert</h4>
+                            <p>Temperature exceeded 30°C in Broiler House 2</p>
+                            <span class="alert-time">10 minutes ago</span>
+                        </div>
+                        <div class="alert-actions">
+                            <button class="alert-action" aria-label="View details">
+                                <i class="fas fa-eye" aria-hidden="true"></i>
+                            </button>
+                            <button class="alert-dismiss" aria-label="Dismiss alert">
+                                <i class="fas fa-times" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="alert-card alert-medium" data-alert-id="2">
+                        <div class="alert-icon">
+                            <i class="fas fa-info-circle" aria-hidden="true"></i>
+                        </div>
+                        <div class="alert-content">
+                            <h4>Ammonia Level Rising</h4>
+                            <p>Ammonia levels approaching threshold in Layer House 1</p>
+                            <span class="alert-time">30 minutes ago</span>
+                        </div>
+                        <div class="alert-actions">
+                            <button class="alert-action" aria-label="View details">
+                                <i class="fas fa-eye" aria-hidden="true"></i>
+                            </button>
+                            <button class="alert-dismiss" aria-label="Dismiss alert">
+                                <i class="fas fa-times" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="alert-card alert-low" data-alert-id="3">
+                        <div class="alert-icon">
+                            <i class="fas fa-info-circle" aria-hidden="true"></i>
+                        </div>
+                        <div class="alert-content">
+                            <h4>Humidity Fluctuation</h4>
+                            <p>Humidity dropped below optimal range in Breeder House</p>
+                            <span class="alert-time">2 hours ago</span>
+                        </div>
+                        <div class="alert-actions">
+                            <button class="alert-action" aria-label="View details">
+                                <i class="fas fa-eye" aria-hidden="true"></i>
+                            </button>
+                            <button class="alert-dismiss" aria-label="Dismiss alert">
+                                <i class="fas fa-times" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+                
+    <!-- Install App Button -->
+    <div id="install-button" class="install-button hidden" aria-label="Install App">
+        <i class="fas fa-download" aria-hidden="true"></i>
+        <span>Install App</span>
+    </div>
+
+    <!-- Enhanced Notification Panel -->
+    <div class="notification-panel" id="notificationPanel">
+        <div class="notification-header">
+            <h3>Notifications</h3>
+            <div class="notification-controls">
+                <button id="notificationSettings" class="icon-btn" aria-label="Notification settings">
+                    <i class="fas fa-cog"></i>
+                </button>
+                <div class="notification-actions">
+                    <button id="markAllRead" class="text-btn">Mark all read</button>
+                    <button id="clearNotifications" class="text-btn">Clear all</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="notification-filter">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="unread">Unread</button>
+            <button class="filter-btn" data-filter="alerts">Alerts</button>
+            <button class="filter-btn" data-filter="system">System</button>
+        </div>
+        
+        <div class="notification-list" id="notificationList">
+            <!-- Notifications will be dynamically populated -->
+        </div>
+        
+        <div class="notification-empty-state" id="emptyState">
+            <i class="fas fa-bell-slash"></i>
+            <h4>No notifications</h4>
+            <p>You're all caught up!</p>
+        </div>
+    </div>
+    
+    <!-- Notification Settings Modal -->
+    <div class="modal" id="notificationSettingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Notification Settings</h3>
+                <button class="modal-close" aria-label="Close modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="setting-category">
+                    <h4>Notification Types</h4>
+                    <div class="setting-item">
+                        <label for="temperatureAlerts">Temperature alerts</label>
+                        <input type="checkbox" id="temperatureAlerts" checked>
+                    </div>
+                    <div class="setting-item">
+                        <label for="humidityAlerts">Humidity alerts</label>
+                        <input type="checkbox" id="humidityAlerts" checked>
+                    </div>
+                    <div class="setting-item">
+                        <label for="ammoniaAlerts">Ammonia alerts</label>
+                        <input type="checkbox" id="ammoniaAlerts" checked>
+                    </div>
+                    <div class="setting-item">
+                        <label for="systemUpdates">System updates</label>
+                        <input type="checkbox" id="systemUpdates" checked>
+                    </div>
+                </div>
+                
+                <div class="setting-category">
+                    <h4>Alert Thresholds</h4>
+                    <div class="setting-item">
+                        <label for="temperatureThreshold">Temperature threshold (°C)</label>
+                        <input type="number" id="temperatureThreshold" value="30" min="20" max="40" step="0.5">
+                    </div>
+                    <div class="setting-item">
+                        <label for="humidityThreshold">Humidity threshold (%)</label>
+                        <input type="number" id="humidityThreshold" value="70" min="30" max="90" step="1">
+                    </div>
+                    <div class="setting-item">
+                        <label for="ammoniaThreshold">Ammonia threshold (ppm)</label>
+                        <input type="number" id="ammoniaThreshold" value="15" min="5" max="25" step="1">
+                    </div>
+                </div>
+                
+                <div class="setting-category">
+                    <h4>Notification Methods</h4>
+                    <div class="setting-item">
+                        <label for="browserNotifications">Browser notifications</label>
+                        <input type="checkbox" id="browserNotifications">
+                    </div>
+                    <div class="setting-item">
+                        <label for="soundNotifications">Sound alerts</label>
+                        <input type="checkbox" id="soundNotifications" checked>
+                    </div>
+                    <div class="setting-item">
+                        <label for="emailNotifications">Email notifications</label>
+                        <input type="checkbox" id="emailNotifications">
+                    </div>
+                    <div class="setting-item">
+                        <label for="smsNotifications">SMS alerts</label>
+                        <input type="checkbox" id="smsNotifications">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="saveNotificationSettings" class="btn-primary">Save Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Export Options Modal -->
+    <div class="modal export-modal" id="exportOptionsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Export Data</h3>
+                <button class="modal-close" aria-label="Close modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="export-options">
+                    <div class="export-option" data-format="csv">
+                        <i class="fas fa-file-csv"></i>
+                        <span>CSV Format</span>
+                    </div>
+                    <div class="export-option" data-format="json">
+                        <i class="fas fa-file-code"></i>
+                        <span>JSON Format</span>
+                    </div>
+                    <div class="export-option" data-format="pdf">
+                        <i class="fas fa-file-pdf"></i>
+                        <span>PDF Report</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="cancelExport">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Action Modals -->
+    <div class="modal action-modal" id="ventilationModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Ventilation Control</h3>
+                <button class="modal-close" aria-label="Close modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="ventilationLevel">Ventilation Level</label>
+                    <input type="range" id="ventilationLevel" min="0" max="100" value="50">
+                    <span id="ventilationValue">50%</span>
+                </div>
+                <div class="form-group">
+                    <label for="ventilationDuration">Duration (minutes)</label>
+                    <input type="number" id="ventilationDuration" min="1" max="120" value="30">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="cancelVentilation">Cancel</button>
+                <button class="btn-primary" id="applyVentilation">Apply</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
